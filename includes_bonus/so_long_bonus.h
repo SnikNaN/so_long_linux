@@ -20,7 +20,7 @@
 # define KEY_D 1751
 /* FRAMERATE CORRECTION */
 # define TICK 200
-# define FPS 520
+# define FPS 60
 /* SPEED MUST BE A FEWER THAN TILE !!! */
 # define PL_SPEED 8
 # define ENM_SPEED 2
@@ -98,6 +98,7 @@ typedef struct s_character
 	int		new_y;
 	int		anim_cntr;
 	int		speed;
+    int last_rot[2];
 }	t_character;
 
 typedef struct s_game
@@ -119,6 +120,8 @@ typedef struct s_game
 	void		*window;
 	int			seed;
 	int			tick;
+    char        secret;
+    int         shield;
 }	t_game;
 
 int		parse_map(int fd, t_game *game);
@@ -132,6 +135,8 @@ int		ft_fix_y(int y, t_game *game);
 int		ft_rnd(int *seed, int lim);
 void	ft_put_tile(t_game *game, int x, int y);
 void	ft_put_old(t_game *g, t_character *ch);
+void	ft_put_tile_secret(t_game *game, int x, int y);
+void	ft_put_old_secret(t_game *g, t_character *ch);
 void	ft_draw_map(t_game *game);
 int		ft_render_next_frame(t_game *g);
 void	ft_anim_rot(t_character *ch);

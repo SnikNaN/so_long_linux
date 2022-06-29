@@ -30,27 +30,33 @@ static int	ft_count_next_action(t_game *g, int i)
 {
 	if (g->enemy[i].rot == UP)
 	{
-		if (g->enemy[i].y > ft_rnd(&g->seed, 4))
+		if (g->enemy[i].y > ft_rnd(&g->seed, 4)
+            || (g->enemy[i].last_rot[0] == g->enemy[i].x && g->enemy[i].last_rot[1] == g->enemy[i].y))
 			return (g->enemy[i].y--);
 	}
 	else if (g->enemy[i].rot == DWN)
 	{
 		if (g->enemy[i].y < 0
-			|| g->enemy[i].y < g->y_size - (2 + ft_rnd(&g->seed, 4)))
+			|| g->enemy[i].y < g->y_size - (2 + ft_rnd(&g->seed, 4))
+               || (g->enemy[i].last_rot[0] == g->enemy[i].x && g->enemy[i].last_rot[1] == g->enemy[i].y))
 			return (g->enemy[i].y++);
 	}
 	else if (g->enemy[i].rot == LFT)
 	{
-		if (g->enemy[i].x > g->x_size || g->enemy[i].x > ft_rnd(&g->seed, 4))
+		if (g->enemy[i].x > g->x_size || g->enemy[i].x > ft_rnd(&g->seed, 4)
+            || (g->enemy[i].last_rot[0] == g->enemy[i].x && g->enemy[i].last_rot[1] == g->enemy[i].y))
 			return (g->enemy[i].x--);
 	}
 	else if (g->enemy[i].rot == RGT)
 	{
 		if (g->enemy[i].x < 0
-			|| g->enemy[i].x < g->x_size - (2 + ft_rnd(&g->seed, 4)))
+			|| g->enemy[i].x < g->x_size - (2 + ft_rnd(&g->seed, 4))
+               || (g->enemy[i].last_rot[0] == g->enemy[i].x && g->enemy[i].last_rot[1] == g->enemy[i].y))
 			return (g->enemy[i].x++);
 	}
-	return (-TILE);
+    g->enemy[i].last_rot[0] = g->enemy[i].x;
+    g->enemy[i].last_rot[1] = g->enemy[i].y;
+    return (-TILE);
 }
 
 void	ft_enemy_moving(t_game *g)
@@ -60,17 +66,37 @@ void	ft_enemy_moving(t_game *g)
 	i = 0;
 	while (i < 3)
 	{
-		if (!g->enemy[i].move && !g->enemy[i].rotate && g->you_win == 0)
+		if (!g->enemy[i].move && !g->enemy[i].rotate)// && g->you_win == 0)
 		{
 			g->enemy[i].prev_x = g->enemy[i].x * TILE;
 			g->enemy[i].prev_y = g->enemy[i].y * TILE;
 			if (ft_count_next_action(g, i) == -TILE)
-				ft_process_rot(ft_rnd(&g->seed, 4), &g->enemy[i]);
+            {
+                if (i == 1) // Brown is always turns counter-clockwise
+                {
+                    if (g->enemy[i].rot == DWN && g->enemy[i].x == (g->x_size - 2))
+                        ft_process_rot((g->enemy[i].rot + 2) % 4, &g->enemy[i]);
+                    else
+                        ft_process_rot((g->enemy[i].rot + 3) % 4, &g->enemy[i]);
+                }
+                else if (i == 2) // Grey is always turns clockwise
+                {
+                    if (g->enemy[i].rot == LFT && g->enemy[i].y == 0)
+                        ft_process_rot((g->enemy[i].rot + 2) % 4, &g->enemy[i]);
+                    else
+                        ft_process_rot((g->enemy[i].rot + 1) % 4, &g->enemy[i]);
+                }
+                else
+                {
+                    ft_process_rot((g->enemy[i].rot + 1 + ft_rnd(&g->seed, 2)) % 4, &g->enemy[i]);
+                }
+            }
 			g->enemy[i].new_x = g->enemy[i].x * TILE;
 			g->enemy[i].new_y = g->enemy[i].y * TILE;
 			g->enemy[i].move = 1;
 		}
-		ft_check_collisions(g, i);
+        if (g->shield != 1)
+		    ft_check_collisions(g, i);
 		i++;
 	}
 }

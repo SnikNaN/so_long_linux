@@ -34,6 +34,16 @@ void	ft_put_tile(t_game *game, int x, int y)
 	}
 }
 
+void	ft_put_tile_secret(t_game *game, int x, int y)
+{
+    if (x >= game->x_size || y >= game->y_size || x < 0 || y < 0)
+        return ;
+    if ((game->map)[y][x] >= '1' && (game->map)[y][x] <= '8')
+            mlx_put_image_to_window(game->mlx_ptr, game->window,
+                                    game->wall[game->map[y][x] - '1'].ptr, ft_fix_x(x, game),
+                                    ft_fix_y(y, game));
+}
+
 static void	ft_put_steps(t_game *g)
 {
 	char	*steps;
@@ -86,6 +96,10 @@ static void	ft_animate_player_and_enemies(t_game *g)
 	ft_anim_mov(&g->player);
 	ft_anim_rot(&g->player);
 	ft_change_pos(g, &g->player);
+    if (g->shield != 0)
+        ft_put_tile_secret(g, g->player.x, g->player.y);
+    if (g->shield != 0 && g->player.move)
+        ft_put_old_secret(g, &g->player);
 	while (i < 3)
 	{
 		ft_anim_mov(&g->enemy[i]);
@@ -98,15 +112,20 @@ static void	ft_animate_player_and_enemies(t_game *g)
 int	ft_render_next_frame(t_game *g)
 {
 	static int	first;
-    static clock_t	i;
-    clock_t j = clock();
+    static int  frame_time;
+    static struct timespec time;
+    static unsigned long long   prev;
+    unsigned long long   cur;
 
+    clock_gettime(CLOCK_MONOTONIC, &time);
+    cur = 1000 * time.tv_sec + time.tv_nsec / 1000000;
     if (!first)
     {
 	    ft_draw_map(g);
+        frame_time = 1000 / FPS;
 	    first = 1;
     }
-    if (j - i >= CLOCKS_PER_SEC / FPS)
+    if (cur - prev >= frame_time)
 	{
 		ft_put_below_tiles(g);
 		ft_anim_egg(g);
@@ -121,7 +140,7 @@ int	ft_render_next_frame(t_game *g)
 			else
 				ft_process_rot(g->player.rot + 1, &g->player);
 		}
-        i = j;
+        prev = cur;
 	}
 	return (0);
 }

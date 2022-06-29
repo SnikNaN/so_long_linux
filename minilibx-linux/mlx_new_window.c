@@ -52,7 +52,7 @@ void	*mlx_new_window(t_xvar *xvar,int size_x,int size_y,char *title)
 	new_win->width = size_x;
 	new_win->height = size_y;
 
-	mlx_int_anti_resize_win(xvar,new_win->window,size_x,size_y);
+	//mlx_int_anti_resize_win(xvar,new_win->window,size_x,size_y);
 	XStoreName(xvar->display,new_win->window,title);
 	XSetWMProtocols(xvar->display, new_win->window, &(xvar->wm_delete_window), 1);
 	xgcv.foreground = -1;
@@ -70,5 +70,12 @@ void	*mlx_new_window(t_xvar *xvar,int size_x,int size_y,char *title)
 	bzero(&(new_win->hooks), sizeof(new_win->hooks));
 	XMapRaised(xvar->display,new_win->window);
 	mlx_int_wait_first_expose(xvar,new_win->window);
+
+    //test
+    force_properties(xvar->display, new_win->window);
+//    mlx_ext_fullscreen(xvar, xvar->win_list, 1);
+//    mlx_ext_fullscreen(xvar, xvar->win_list, 0);
+    toggle_fullscreen(xvar->display, new_win->window);
+
 	return (new_win);
 }

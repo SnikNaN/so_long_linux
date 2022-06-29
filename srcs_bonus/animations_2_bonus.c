@@ -23,11 +23,25 @@ void	ft_put_old(t_game *g, t_character *ch)
 	y = ch->prev_y / TILE;
 	if (ch->prev_y > ch->new_y)
 		y++;
-	ft_put_tile(g, x, y);
+    ft_put_tile(g, x, y);
 	if (ch == &g->enemy[0] || ch == &g->enemy[1] || ch == &g->enemy[2])
 	{
 		ft_put_tile(g, x + 1, y);
 		ft_put_tile(g, x, y + 1);
 		ft_put_tile(g, x + 1, y + 1);
 	}
+}
+
+void	ft_put_old_secret(t_game *g, t_character *ch)
+{
+    int	x;
+    int	y;
+
+    x = ch->prev_x / TILE;
+    if (ch->prev_x > ch->new_x)
+        x++;
+    y = ch->prev_y / TILE;
+    if (ch->prev_y > ch->new_y)
+        y++;
+    ft_put_tile_secret(g, x, y);
 }

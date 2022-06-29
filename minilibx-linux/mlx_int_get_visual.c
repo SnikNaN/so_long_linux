@@ -30,5 +30,6 @@ int		mlx_int_get_visual(t_xvar *xvar)
 			    &template,&nb_item)) )
     return (-1);
   xvar->visual = vi->visual;
+  free(vi);
   return (0);
 }

@@ -62,6 +62,8 @@ static void	ft_set_start(t_game *game, int x, int y, int *cnt)
 {
 	game->player.x = x;
 	game->player.y = y;
+    game->shield = 0;
+    game->secret = (char)(ft_rnd(&game->seed, 8) + '1');
 	(game->map)[y][x] = (char)ft_rnd(&game->seed, 8);
 	(*cnt)++;
 }

@@ -16,6 +16,8 @@ void	ft_process_moving(t_game *g, int x, int y)
 {
 	char	c;
 
+    if (x < 0 || x >= g->x_size || y < 0 || y >= g->y_size)
+        return;
 	c = g->map[y][x];
 	if (c == 'E' && ft_lstsize(g->eggs) == 0)
 	{
@@ -24,8 +26,14 @@ void	ft_process_moving(t_game *g, int x, int y)
 			g->x_size / 2 * TILE - TILE / 2,
 			g->y_size * TILE + 20, 0x00FF44, "You win! Press ESC for exit...");
 	}
-	if ((c >= 0 && c < 10) || c == 'C' || (c == 'E' && g->you_win == 1))
+	if ((c >= 0 && c < 10) || c == 'C' || (c == 'E') || (c == g->secret))// && g->you_win == 1))
 	{
+        if (c == g->secret)
+            g->shield = 1;
+        else if (g->shield == 1)
+            g->shield = 2;
+        else
+            g->shield = 0;
 		g->player.prev_x = g->player.x * TILE;
 		g->player.prev_y = g->player.y * TILE;
 		g->player.new_x = x * TILE;
@@ -83,7 +91,7 @@ static int	ft_key_hook(int keycode, t_game *game)
 	if (keycode == KEY_D)
 	{
 		ft_process_rot(RGT, &game->player);
-		ft_process_moving(game, game->player.x + 1, game->player.y);
+        ft_process_moving(game, game->player.x + 1, game->player.y);
 	}
 	if (keycode == KEY_S)
 	{
@@ -106,6 +114,7 @@ static int	ft_key_hook(int keycode, t_game *game)
 int	main(int argc, char **argv)
 {
 	t_game	game;
+    ft_memset(&game, 0, sizeof(game));
 
 	if (argc == 2)
 	{
@@ -115,14 +124,17 @@ int	main(int argc, char **argv)
 			ft_free_map(&game);
 			exit(EXIT_FAILURE);
 		}
-		game.window = mlx_new_window(game.mlx_ptr, game.x_size * TILE,
-				game.y_size * TILE + 30, "so_long");
+        game.window = mlx_new_window(game.mlx_ptr, 1570,
+                                     930, "so_long");
+//		game.window = mlx_new_window(game.mlx_ptr, game.x_size * TILE,
+//				game.y_size * TILE + 30, "so_long");
 		ft_create_eggs_list(&game);
 		mlx_do_key_autorepeaton(game.mlx_ptr);
 		mlx_loop_hook(game.mlx_ptr, ft_render_next_frame, &game);
 		mlx_hook(game.window, 2, 1L << 0, ft_key_hook, &game);
 		mlx_hook(game.window, 17, 1L << 17, ft_exit_success, &game);
 		mlx_do_sync(game.mlx_ptr);
+        //mlx_ext_fullscreen(game.mlx_ptr, game.window, 1);
 		mlx_loop(game.mlx_ptr);
 	}
 	ft_putstr_fd("Error\nInvalid arguments. Usage: ./so_long <map file>\n", 2);

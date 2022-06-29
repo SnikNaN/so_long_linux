@@ -4,7 +4,7 @@ B_HEADERS_DIRS = includes_bonus $(LIBFT_DIR) $(MINILIBX_DIR) cute_png
 HEADERS = includes/so_long.h includes/get_next_line.h $(LIBFT_DIR)/libft.h $(MINILIBX_DIR)/mlx.h
 B_HEADERS = includes_bonus/so_long_bonus.h includes_bonus/get_next_line_bonus.h $(LIBFT_DIR)/libft.h $(MINILIBX_DIR)/mlx.h cute_png/cute_png.h
 CC = gcc
-C_FLAGS = #-Wall -Wextra -Werror
+C_FLAGS = -g#-Wall -Wextra -Werror
 LIBFT_DIR = libft
 MINILIBX_DIR = minilibx-linux
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -48,7 +48,7 @@ CUTE_PNG = cute_png/cute_png.o
 all: check_libft check_mlx $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(CUTE_PNG) $(OBJ_FILE)
-	$(CC) $(C_FLAGS) $(OBJ_FILE) $(CUTE_PNG) -L$(LIBFT_DIR) -lft -L./$(MINILIBX_DIR) -lmlx -lX11 -lXext -lXrender -lm  -o $(NAME)
+	$(CC) $(C_FLAGS) $(OBJ_FILE) $(CUTE_PNG) -L$(LIBFT_DIR) -lft -L./$(MINILIBX_DIR) -lmlx -lX11 -lXext -lXrender -lXrandr -lm  -o $(NAME)
 
 bonus:
 	$(MAKE) OBJ_FILE="$(B_OBJ_FILE)" SRC_DIR="$(B_SRC_DIR)" HEADERS_DIRS="$(B_HEADERS_DIRS)" HEADERS="$(B_HEADERS)" all

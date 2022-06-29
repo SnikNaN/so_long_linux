@@ -28,7 +28,7 @@ void	ft_initialize_enemy(t_game *g, t_character *ch)
 	}
 	if (ch == &g->enemy[2])
 	{
-		ch->x = g->x_size + 100;
+		ch->x = g->x_size + 50;
 		ch->y = ft_rnd(&g->seed, g->y_size - 2);
 		ch->rot = LFT;
 	}
