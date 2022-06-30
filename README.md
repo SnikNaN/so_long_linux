@@ -7,7 +7,7 @@ Written in **C** with modified **[MiniLibX](https://github.com/42Paris/minilibx-
 
 ### Installation:
 
-*Prereqs: X11 lib + XRender extension*
+*Prereqs: X11 lib + libxext-dev + libxrender-dev + libxrandr-dev*
 ```
 git clone https://github.com/SnikNaN/so_long_linux.git ; cd so_long_linux ; make bonus
 ```
