@@ -74,10 +74,10 @@ void	*mlx_new_window(t_xvar *xvar,int size_x,int size_y,char *title)
 	mlx_int_wait_first_expose(xvar,new_win->window);
 
     //test
-    //force_properties(xvar->display, new_win->window);
+    force_properties(xvar->display, new_win->window);
     //mlx_ext_fullscreen(xvar, xvar->win_list, 1);
 //    mlx_ext_fullscreen(xvar, xvar->win_list, 0);
-    //toggle_fullscreen(xvar->display, new_win->window);
+    toggle_fullscreen(xvar->display, new_win->window);
 
 	return (new_win);
 }

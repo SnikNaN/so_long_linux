@@ -30,10 +30,10 @@
 # include <sys/shm.h>
 # include <X11/extensions/XShm.h>
 # include <X11/extensions/Xrender.h>
-//# include <X11/extensions/Xrandr.h>
+# include <X11/extensions/Xrandr.h>
 # include <X11/XKBlib.h>
 
-//#include <X11/Xatom.h>
+#include <X11/Xatom.h>
 /* #include	<X11/xpm.h> */
 
 

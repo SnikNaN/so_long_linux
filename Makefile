@@ -48,7 +48,7 @@ CUTE_PNG = cute_png/cute_png.o
 all: check_libft check_mlx $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(CUTE_PNG) $(OBJ_FILE)
-	$(CC) $(C_FLAGS) $(OBJ_FILE) $(CUTE_PNG) -L$(LIBFT_DIR) -lft -L./$(MINILIBX_DIR) -lmlx -lX11 -lXext -lXrender -lm  -o $(NAME)
+	$(CC) $(C_FLAGS) $(OBJ_FILE) $(CUTE_PNG) -L$(LIBFT_DIR) -lft -L./$(MINILIBX_DIR) -lmlx -lX11 -lXext -lXrender -lXrandr -lm  -o $(NAME)
 
 bonus:
 	$(MAKE) OBJ_FILE="$(B_OBJ_FILE)" SRC_DIR="$(B_SRC_DIR)" HEADERS_DIRS="$(B_HEADERS_DIRS)" HEADERS="$(B_HEADERS)" all
