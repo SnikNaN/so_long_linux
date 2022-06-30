@@ -19,18 +19,18 @@ void	ft_put_tile(t_game *game, int x, int y)
 	if ((int)(game->map)[y][x] >= 0 && (int)(game->map)[y][x] < 10)
 		mlx_put_image_to_window(game->mlx_ptr, game->window,
 			game->empty[(int)game->map[y][x]].ptr, ft_fix_x(x, game),
-			ft_fix_y(y, game));
+			ft_fix_y(y, game), game->scale);
 	else
 	{
 		mlx_put_image_to_window(game->mlx_ptr, game->window,
-			game->empty[0].ptr, ft_fix_x(x, game), ft_fix_y(y, game));
+			game->empty[0].ptr, ft_fix_x(x, game), ft_fix_y(y, game), game->scale);
 		if ((game->map)[y][x] >= '1' && (game->map)[y][x] <= '8')
 			mlx_put_image_to_window(game->mlx_ptr, game->window,
 				game->wall[game->map[y][x] - '1'].ptr, ft_fix_x(x, game),
-				ft_fix_y(y, game));
+				ft_fix_y(y, game), game->scale);
 		else if ((game->map)[y][x] == 'E')
 			mlx_put_image_to_window(game->mlx_ptr, game->window,
-				game->exit_img.ptr, ft_fix_x(x, game), ft_fix_y(y, game));
+				game->exit_img.ptr, ft_fix_x(x, game), ft_fix_y(y, game), game->scale);
 	}
 }
 
@@ -41,7 +41,7 @@ void	ft_put_tile_secret(t_game *game, int x, int y)
     if ((game->map)[y][x] >= '1' && (game->map)[y][x] <= '8')
             mlx_put_image_to_window(game->mlx_ptr, game->window,
                                     game->wall[game->map[y][x] - '1'].ptr, ft_fix_x(x, game),
-                                    ft_fix_y(y, game));
+                                    ft_fix_y(y, game), game->scale);
 }
 
 static void	ft_put_steps(t_game *g)
@@ -49,7 +49,7 @@ static void	ft_put_steps(t_game *g)
 	char	*steps;
 	int		y;
 
-	y = g->y_size * TILE + 20;
+	y = g->screen_y - 20;
 	steps = ft_itoa(g->steps);
 	mlx_string_put(g->mlx_ptr, g->window, 80, y, 0, "00000000000");
 	mlx_string_put(g->mlx_ptr, g->window, 80, y, 0, "11111111111");

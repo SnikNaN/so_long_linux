@@ -66,14 +66,14 @@ void	ft_change_pos(t_game *g, t_character *ch)
 			&& ft_abs(ch->prev_y - ch->new_y) < ch->speed)
 			ch->move = 0;
 		mlx_put_image_to_window(g->mlx_ptr, g->window, ch->im,
-			ch->prev_x, ch->prev_y);
+			ch->prev_x, ch->prev_y, g->scale);
 	}
 	else
 	{
 		ch->prev_x = ch->x * TILE;
 		ch->prev_y = ch->y * TILE;
 		mlx_put_image_to_window(g->mlx_ptr, g->window, ch->im,
-			ft_fix_x(ch->x, g), ft_fix_y(ch->y, g));
+			ft_fix_x(ch->x, g), ft_fix_y(ch->y, g), g->scale);
 	}
 }
 
@@ -88,7 +88,7 @@ void	ft_anim_egg(t_game *g)
 		egg = lst->content;
 		ft_put_tile(g, egg->x, egg->y);
 		mlx_put_image_to_window(egg->mlx, egg->win, egg->img, egg->x * TILE,
-			egg->y * TILE);
+			egg->y * TILE, g->scale);
 		egg->i += egg->cnt_dir;
 		if (egg->i == -1)
 		{

@@ -21,8 +21,8 @@ static void	ft_check_collisions(t_game *g, int i)
 	{
 		g->you_win = -1;
 		mlx_string_put(g->mlx_ptr, g->window,
-			g->x_size / 2 * TILE - TILE / 2,
-			g->y_size * TILE + 20, 0xff4444, "You lose... Press ESC for exit");
+			g->screen_x / 2 - TILE / 2,
+			g->screen_y - 20, 0xff4444, "You lose... Press ESC for exit");
 	}
 }
 
@@ -88,7 +88,16 @@ void	ft_enemy_moving(t_game *g)
                 }
                 else
                 {
-                    ft_process_rot((g->enemy[i].rot + 1 + ft_rnd(&g->seed, 2)) % 4, &g->enemy[i]);
+                    int new_rot = (g->enemy[i].rot + 1 + ft_rnd(&g->seed, 2)) % 4;
+                    if (new_rot == RGT && g->enemy[i].x == g->x_size - 2)
+                        new_rot = LFT;
+                    else if (new_rot == UP && g->enemy[i].y == 0)
+                        new_rot = DWN;
+                    else if (new_rot == DWN && g->enemy[i].y == g->y_size - 2)
+                        new_rot = UP;
+                    else if (new_rot == LFT && g->enemy[i].x == 0)
+                        new_rot = RGT;
+                    ft_process_rot(new_rot, &g->enemy[i]);
                 }
             }
 			g->enemy[i].new_x = g->enemy[i].x * TILE;

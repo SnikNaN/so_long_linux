@@ -13,7 +13,7 @@
 #include	"mlx_int.h"
 
 int	mlx_put_image_to_window(t_xvar *xvar,t_win_list *win,t_img *img,
-									int x,int y)
+									int x,int y, double scale)
 {
 	GC		gc = (img->gc) ? img->gc : win->gc;
 	Pixmap 	target_pixmap;
@@ -37,8 +37,16 @@ int	mlx_put_image_to_window(t_xvar *xvar,t_win_list *win,t_img *img,
 		else if (img->type == MLX_TYPE_SHM)
 			XShmPutImage(xvar->display, img->pix, gc, img->image, 0, 0, 0, 0,
 						 img->width, img->height, False);
+        //
+        XTransform transform_matrix = {{
+                                               {XDoubleToFixed(scale), XDoubleToFixed(0), XDoubleToFixed(0)},
+                                               {XDoubleToFixed(0), XDoubleToFixed(scale), XDoubleToFixed(0)},
+                                               {XDoubleToFixed(0), XDoubleToFixed(0), XDoubleToFixed(1.0)}
+                                       }};
+        XRenderSetPictureTransform(xvar->display, img->pict, &transform_matrix);
+        //
 		XRenderComposite(xvar->display, PictOpOver, img->pict, 0, target_picture,
-						 0, 0, 0, 0, x, y, img->width, img->height);
+						 0, 0, 0, 0, x / scale, y / scale, img->width, img->height);
 	}
 	else
 	{

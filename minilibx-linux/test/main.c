@@ -43,13 +43,13 @@ int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int t
 
 int	expose_win1(void *p)
 {
-  mlx_put_image_to_window(mlx,win1,im3,0,0);
+  mlx_put_image_to_window(mlx,win1,im3,0,0, 1);
 }
 
 int	expose_win2(void *p)
 {
-  mlx_put_image_to_window(mlx,win2,im4,0,0);
-  mlx_put_image_to_window(mlx,win2,im2,0,0);
+  mlx_put_image_to_window(mlx,win2,im4,0,0,1);
+  mlx_put_image_to_window(mlx,win2,im2,0,0,1);
 }
 
 int	key_win1(int key,void *p)
@@ -142,7 +142,7 @@ int	main()
   printf("OK (pixmap : %d)\n",(int)((t_img *)im1)->pix);
 
   printf(" => Put Image1 ...");
-  mlx_put_image_to_window(mlx,win1,im1,20,20);
+  mlx_put_image_to_window(mlx,win1,im1,20,20,1);
   printf("OK\n");
   sleep(2);
 
@@ -166,7 +166,7 @@ int	main()
   printf("OK (pixmap : %d)\n",(int)((t_img *)im3)->pix);
 
   printf(" => Put Image3 ...");
-  mlx_put_image_to_window(mlx,win1,im3,20,20);
+  mlx_put_image_to_window(mlx,win1,im3,20,20,1);
   printf("OK\n");
   sleep(2);
 
@@ -188,8 +188,8 @@ int	main()
   sleep(2);
 
   printf(" => Put xpm ...");
-  mlx_put_image_to_window(mlx,win1,im2,0,0);
-  mlx_put_image_to_window(mlx,win1,im2,100,100);
+  mlx_put_image_to_window(mlx,win1,im2,0,0,1);
+  mlx_put_image_to_window(mlx,win1,im2,100,100,1);
   printf("OK\n");
   sleep(2);
 

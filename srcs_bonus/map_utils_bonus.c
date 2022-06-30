@@ -106,8 +106,8 @@ void	ft_draw_map(t_game *game)
 	}
 	mlx_put_image_to_window(game->mlx_ptr, game->window,
 		game->player.im, ft_fix_x(game->player.x, game),
-		ft_fix_y(game->player.y, game));
-	y = game->y_size * TILE + 20;
+		ft_fix_y(game->player.y, game), game->scale);
+	y = game->screen_y - 20;
 	mlx_string_put(game->mlx_ptr, game->window, 10, y,
 		0xb0c4ff, "Steps:");
 }

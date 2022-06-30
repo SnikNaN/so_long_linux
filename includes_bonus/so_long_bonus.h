@@ -14,13 +14,13 @@
 # define SO_LONG_BONUS_H
 # define TILE 128
 # define KEY_ESC 65307
-# define KEY_W 1731
-# define KEY_A 1734
-# define KEY_S 1753
-# define KEY_D 1751
+# define KEY_W 119//1731
+# define KEY_A 97//1734
+# define KEY_S 115//1753
+# define KEY_D 100//1751
 /* FRAMERATE CORRECTION */
 # define TICK 200
-# define FPS 60
+# define FPS 45
 /* SPEED MUST BE A FEWER THAN TILE !!! */
 # define PL_SPEED 8
 # define ENM_SPEED 2
@@ -122,6 +122,9 @@ typedef struct s_game
 	int			tick;
     char        secret;
     int         shield;
+    double      scale;
+    int         screen_x;
+    int         screen_y;
 }	t_game;
 
 int		parse_map(int fd, t_game *game);

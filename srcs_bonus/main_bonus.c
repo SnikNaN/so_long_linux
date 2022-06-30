@@ -23,8 +23,8 @@ void	ft_process_moving(t_game *g, int x, int y)
 	{
 		g->you_win = 1;
 		mlx_string_put(g->mlx_ptr, g->window,
-			g->x_size / 2 * TILE - TILE / 2,
-			g->y_size * TILE + 20, 0x00FF44, "You win! Press ESC for exit...");
+			g->screen_x / 2 - TILE / 2,
+			g->screen_y - 20, 0x00FF44, "You win! Press ESC for exit...");
 	}
 	if ((c >= 0 && c < 10) || c == 'C' || (c == 'E') || (c == g->secret))// && g->you_win == 1))
 	{
@@ -114,8 +114,8 @@ static int	ft_key_hook(int keycode, t_game *game)
 int	main(int argc, char **argv)
 {
 	t_game	game;
-    ft_memset(&game, 0, sizeof(game));
 
+    ft_memset(&game, 0, sizeof(game));
 	if (argc == 2)
 	{
 		game.mlx_ptr = mlx_init();
@@ -124,8 +124,14 @@ int	main(int argc, char **argv)
 			ft_free_map(&game);
 			exit(EXIT_FAILURE);
 		}
-        game.window = mlx_new_window(game.mlx_ptr, 1570,
-                                     930, "so_long");
+        mlx_get_screen_size(game.mlx_ptr, &game.screen_x, &game.screen_y);
+        if (TILE * game.x_size == game.screen_x)
+            game.scale = 1;
+        else
+            game.scale = (double)(TILE * game.x_size) / game.screen_x;
+        printf("screen size: %dx%d, scale: %f\n", game.screen_x, game.screen_y, game.scale);
+        game.window = mlx_new_window(game.mlx_ptr, game.screen_x,
+                                     game.screen_y, "so_long");
 //		game.window = mlx_new_window(game.mlx_ptr, game.x_size * TILE,
 //				game.y_size * TILE + 30, "so_long");
 		ft_create_eggs_list(&game);
