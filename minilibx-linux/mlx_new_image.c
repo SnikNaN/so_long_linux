@@ -144,7 +144,7 @@ void	*mlx_new_image(t_xvar *xvar,int width, int height)
   t_img	*img;
 
   if (xvar->use_xshm)
-    if (img = mlx_int_new_xshm_image(xvar,width,height,ZPixmap))
+    if (img = mlx_int_new_xshm_image(xvar,width ,height,ZPixmap))
       return (img);
   return (mlx_int_new_image(xvar,width,height,ZPixmap));
 }

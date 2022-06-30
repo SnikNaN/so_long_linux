@@ -119,17 +119,12 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 	{
 		game.mlx_ptr = mlx_init();
+        mlx_get_screen_size(game.mlx_ptr, &game.screen_x, &game.screen_y);
 		if (parse_map(ft_open(argv[1]), &game) + ft_load_resources(&game) < 0)
 		{
 			ft_free_map(&game);
 			exit(EXIT_FAILURE);
 		}
-        mlx_get_screen_size(game.mlx_ptr, &game.screen_x, &game.screen_y);
-        if (TILE * game.x_size == game.screen_x)
-            game.scale = 1;
-        else
-            game.scale = (double)(TILE * game.x_size) / game.screen_x;
-        printf("screen size: %dx%d, scale: %f\n", game.screen_x, game.screen_y, game.scale);
         game.window = mlx_new_window(game.mlx_ptr, game.screen_x,
                                      game.screen_y, "so_long");
 //		game.window = mlx_new_window(game.mlx_ptr, game.x_size * TILE,

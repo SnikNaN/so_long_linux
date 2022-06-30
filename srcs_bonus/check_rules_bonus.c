@@ -64,7 +64,7 @@ static void	ft_set_start(t_game *game, int x, int y, int *cnt)
 	game->player.y = y;
     game->shield = 0;
     game->secret = (char)(ft_rnd(&game->seed, 8) + '1');
-	(game->map)[y][x] = (char)ft_rnd(&game->seed, 8);
+	//(game->map)[y][x] = (char)ft_rnd(&game->seed, 8);
 	(*cnt)++;
 }
 
@@ -85,7 +85,10 @@ static int	ft_check_minimal(t_game *game)
 			if ((game->map)[y][x] == 'C')
 				game->collectibles++;
 			if ((game->map)[y][x] == 'E')
-				exits++;
+            {
+                exits++;
+                ft_set_start(game, x, y, &start_p);
+            }
 			if ((game->map)[y][x] == 'P')
 				ft_set_start(game, x, y, &start_p);
 			x++;

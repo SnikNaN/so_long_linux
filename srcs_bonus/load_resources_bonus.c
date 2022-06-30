@@ -13,6 +13,8 @@
 #include "cute_png.h"
 #include "so_long_bonus.h"
 
+double g_scale = 1;
+
 static void	*mlx_png_file_to_image(void *mlx, char *file, int *width, int *height)
 {
     cp_image_t	png_img;
@@ -27,7 +29,10 @@ static void	*mlx_png_file_to_image(void *mlx, char *file, int *width, int *heigh
         return (NULL);
     }
     cp_premultiply(&png_img);
-    mlx_img = mlx_new_image_alpha(mlx, png_img.w, png_img.h);
+    if (g_scale < 1)
+        mlx_img = mlx_new_image_alpha(mlx, png_img.w / g_scale, png_img.h / g_scale);
+    else
+        mlx_img = mlx_new_image_alpha(mlx, png_img.w, png_img.h);
     if (mlx_img == NULL)
     {
         free(png_img.pix);
@@ -35,16 +40,42 @@ static void	*mlx_png_file_to_image(void *mlx, char *file, int *width, int *heigh
     }
     mlx_img_data = (cp_pixel_t *)mlx_get_data_addr(mlx_img, &i, &i, &i);
     i = 0;
-    while (i < png_img.w * png_img.h)
+    int k = 1;
+    int j = 0;
+    while (k <= png_img.h)
     {
-        mlx_img_data[i].r = png_img.pix[i].b;
-        mlx_img_data[i].g = png_img.pix[i].g;
-        mlx_img_data[i].b = png_img.pix[i].r;
-        mlx_img_data[i].a = png_img.pix[i].a;
-        ++i;
+        while (i < png_img.w * k)
+        {
+            mlx_img_data[j].r = png_img.pix[i].b;
+            mlx_img_data[j].g = png_img.pix[i].g;
+            mlx_img_data[j].b = png_img.pix[i].r;
+            mlx_img_data[j].a = png_img.pix[i].a;
+            ++i;
+            ++j;
+        }
+        k++;
+        if (g_scale < 1)
+            j += png_img.w / g_scale - png_img.h;
     }
-    *width = png_img.w;
-    *height = png_img.h;
+//    while (i < png_img.w * png_img.h)
+//    {
+//        mlx_img_data[j].r = png_img.pix[i].b;
+//        mlx_img_data[j].g = png_img.pix[i].g;
+//        mlx_img_data[j].b = png_img.pix[i].r;
+//        mlx_img_data[j].a = png_img.pix[i].a;
+//        ++i;
+//        ++j;
+//    }
+    if (g_scale < 1)
+    {
+        *width = png_img.w / g_scale;
+        *height = png_img.h / g_scale;
+    }
+    else
+    {
+        *width = png_img.w;
+        *height = png_img.h;
+    }
     free(png_img.pix);
     return (mlx_img);
 }
@@ -155,6 +186,12 @@ int	ft_load_resources(t_game *g)
 {
 	static int	res;
 
+    if (TILE * g->x_size == g->screen_x)
+        g->scale = 1;
+    else
+        g->scale = (double)(TILE * g->x_size) / g->screen_x;
+    printf("screen size: %dx%d, scale: %f\n", g->screen_x, g->screen_y, g->scale);
+    g_scale = g->scale;
 	res += ft_load_map_imgs(g, g->empty, "res/empty/0.png");
 	res += ft_load_map_imgs(g, g->wall, "res/wall/0.png");
 	res += ft_load_character(g, &g->player, "res/hero");
