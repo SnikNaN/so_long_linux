@@ -87,7 +87,6 @@ static int	ft_check_minimal(t_game *game)
 			if ((game->map)[y][x] == 'E')
             {
                 exits++;
-                ft_set_start(game, x, y, &start_p);
             }
 			if ((game->map)[y][x] == 'P')
 				ft_set_start(game, x, y, &start_p);
