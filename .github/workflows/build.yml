@@ -1,0 +1,25 @@
+name: Build and Test so_long_linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libx11-dev libxext-dev libxrender-dev libxrandr-dev
+
+    - name: Build project
+      run: make bonus
+
+    - name: Run the binary
+      run: |
+        chmod +x ./so_long
+        ./so_long maps/map1.ber || echo "Run failed (no display, expected in CI)"
+
