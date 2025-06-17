@@ -70,10 +70,10 @@ static int	ft_key_hook(int keycode, t_game *game)
 		ft_exit_success(game);
 	if (game->move || game->you_win)
 		return (0);
-	if (keycode == KEY_D && game->player.x <= game->x_size)
-		ft_process_moving(game, game->player.x + 1, game->player.y);
-	if (keycode == KEY_S && game->player.y <= game->y_size)
-		ft_process_moving(game, game->player.x, game->player.y + 1);
+       if (keycode == KEY_D && game->player.x < game->x - 1)
+               ft_process_moving(game, game->player.x + 1, game->player.y);
+       if (keycode == KEY_S && game->player.y < game->y - 1)
+               ft_process_moving(game, game->player.x, game->player.y + 1);
 	if (keycode == KEY_A && game->player.x >= 0)
 		ft_process_moving(game, game->player.x - 1, game->player.y);
 	if (keycode == KEY_W && game->player.y >= 0)
