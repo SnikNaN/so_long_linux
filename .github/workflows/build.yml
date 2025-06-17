@@ -7,19 +7,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install build dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libx11-dev libxext-dev libxrender-dev libxrandr-dev
+        sudo apt-get install -y \
+          libx11-dev \
+          libxext-dev \
+          libxrender-dev \
+          libxrandr-dev \
+          xvfb \
+          x11-utils
 
-    - name: Build project
+    - name: Build the project
       run: make bonus
 
-    - name: Run the binary
+    - name: Run the game with virtual display
       run: |
         chmod +x ./so_long
-        ./so_long mapbig.ber || echo "Run failed (no display, expected in CI)"
-
+        xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" ./so_long maps/map1.ber
