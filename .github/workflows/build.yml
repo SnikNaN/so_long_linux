@@ -19,8 +19,7 @@ jobs:
           libxrender-dev \
           libxrandr-dev \
           xvfb \
-          x11-utils \
-          timeout
+          x11-utils
 
     - name: Build the project
       run: make bonus
