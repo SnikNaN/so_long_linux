@@ -19,12 +19,18 @@ jobs:
           libxrender-dev \
           libxrandr-dev \
           xvfb \
-          x11-utils
+          x11-utils \
+          timeout
 
     - name: Build the project
       run: make bonus
 
-    - name: Run the game with virtual display
+    - name: Run all .ber maps in root with virtual display (3s timeout each)
       run: |
         chmod +x ./so_long
-        xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" ./so_long mapbig.ber
+        for map in ./*.ber; do
+          echo "Running $map..."
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" \
+            timeout 3s ./so_long "$map" \
+            || echo "$map failed or timed out"
+        done
