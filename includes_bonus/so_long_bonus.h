@@ -19,11 +19,11 @@
 # define KEY_S 115//1753
 # define KEY_D 100//1751
 /* FRAMERATE CORRECTION */
-# define TICK 200
-# define FPS 45
+# define TICK 500000000
+# define FPS 200
 /* SPEED MUST BE A FEWER THAN TILE !!! */
 # define PL_SPEED 8
-# define ENM_SPEED 2
+# define ENM_SPEED 1
 
 # include <stdio.h>
 # include <stdlib.h>
